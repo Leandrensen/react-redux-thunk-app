@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import { fetchPosts } from '../actions';
+import { fetchPostsAndUsers } from '../actions';
 import { makeStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -19,12 +19,12 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const PostList = (props) => {
-    const { fetchPosts, posts } = props;
+    const { fetchPostsAndUsers, posts } = props;
 
     const classes = useStyles();
 
     useEffect(() => {
-        fetchPosts();
+        fetchPostsAndUsers();
     }, []);
 
     const renderPostsList = () => {
@@ -32,22 +32,18 @@ const PostList = (props) => {
             <List className={classes.root}>
                 {posts.map((post, index) => {
                     return (
-                        <>
-                            <ListItem key={post.id}>
+                        <div key={post.id}>
+                            <ListItem>
                                 <ListItemAvatar>
                                     <Avatar>
                                         <AccountCircleIcon />
                                     </Avatar>
                                 </ListItemAvatar>
-                                <ListItemText
-                                    primary={post.title}
-                                    secondary={post.body}
-                                    divider={index < posts.length ? true : false}
-                                />
+                                <ListItemText primary={post.title} secondary={post.body} />
                                 <UserHeader userId={post.userId} />
                             </ListItem>
                             {index < posts.length && <Divider variant='inset' component='li' />}
-                        </>
+                        </div>
                     );
                 })}
             </List>
@@ -61,4 +57,4 @@ const mapStateToProps = (state) => {
     return { posts: state.posts };
 };
 
-export default connect(mapStateToProps, { fetchPosts })(PostList);
+export default connect(mapStateToProps, { fetchPostsAndUsers })(PostList);
